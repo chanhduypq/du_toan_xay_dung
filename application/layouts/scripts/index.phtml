@@ -2,18 +2,15 @@
 echo $this->doctype();
 $db = Core_Db_Table::getDefaultAdapter();
 $rows = $db->fetchAll('SELECT * FROM layout_content');
-$menu_items = array();
 $logo = array('file_name' => '/images/dien_luc.jpg', 'dynamic' => '1');
 $header_text = $header_text_dynamic = $footer_text = $hinh_nen = '';
 foreach ($rows as $row) {
     $header_text = $row['header_text'];
     $header_text_dynamic = $row['dynamic_header_text'];
     $logo = array('file_name' => $row['file_name'], 'dynamic' => $row['dynamic_logo']);
-    $menu_items[] = $row['menu_text'];
     $footer_text = $row['footer_text'];
     $hinh_nen = $row['hinh_nen_file_name'];
 }
-$GLOBALS['menu_items'] = $menu_items;
 ?>
 <html>
     <head>
@@ -81,48 +78,6 @@ $GLOBALS['menu_items'] = $menu_items;
         <script type="text/javascript">
 
             /**
-             * index.phtml             
-             */
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 100) {
-                    $("#gotop").removeAttr("href");
-                    $("#gotop").stop().animate({
-                        bottom: "0",
-                        right: "0"
-                    }, {
-                        duration: 800,
-                        queue: false
-                    });
-                } else {
-                    $("#gotop").stop().animate({
-                        bottom: "-50",
-                        right: "-50"
-                    }, {
-                        duration: 1000,
-                        queue: false
-                    });
-                }
-                if ($(this).scrollTop() > 100) {
-                    $("#gobottom").removeAttr("href");
-                    $("#gobottom").stop().animate({
-                        top: "-50",
-                        right: "-50"
-                    }, {
-                        duration: 800,
-                        queue: false
-                    });
-                } else {
-                    $("#gobottom").stop().animate({
-                        top: "0",
-                        right: "0"
-                    }, {
-                        duration: 1000,
-                        queue: false
-                    });
-                }
-
-            });
-            /**
              * end index.phtml
              **/
             jQuery(function ($) {
@@ -142,41 +97,6 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
     <?php
 }
 ?>
-
-
-                /**
-                 * index.phtml
-                 **/
-                $("body").queryLoader2({
-                    barColor: "#6e6d73",
-                    backgroundColor: "#fff1b0",
-                    percentage: true,
-                    barHeight: 5,
-                    completeAnimation: "grow",
-                    minimumTime: 100
-                });
-                $("#gotop").click(function () {
-                    $("html, body").animate({
-                        scrollTop: 0
-                    }, "slow");
-                    return false;
-                });
-                $("#gobottom").click(function () {
-                    $("html, body").animate({
-                        scrollTop: $('#footer').offset().top
-                    }, 970);
-                    return false;
-                });
-                /**
-                 * end index.phtml
-                 **/
-            <?php if (isset($this->questions) && count($this->questions) > 0) { ?>
-                    $("#fixed").css('top', $("#add-new").offset().top + $("#add-new").height() + 20);
-                    h = $(window).height() - ($("#add-new").offset().top + $("#add-new").height()) - 40;
-                    $("#fixed").css('height', h + 'px');
-            <?php 
-            }
-            ?>
             });
             
         </script>
@@ -184,7 +104,7 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
     </head>
     <body style="background:#f0f0f0;">
 
-        <?php echo $this->render('index/dialog.phtml'); ?>
+        <?php // echo $this->render('index/dialog.phtml'); ?>
         <div class="container" style="padding-left: 10px;padding-right: 10px;">            
             <!--header-->
             <div class="container" style="padding-top: 30px;height: 100px;background-image: url('<?php echo $this->baseUrl($hinh_nen); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
@@ -226,7 +146,7 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
                         </div>  
                     </div>
                     <div class="span4">
-                        <?php echo $this->render('index/auth.phtml'); ?>
+                        <?php // echo $this->render('index/auth.phtml'); ?>
                     </div>
                 </div>
             </div>            
@@ -325,8 +245,5 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
 
 
         </div>
-        <a id="gotop" style="bottom: -50px; right: -50px;"></a>
-        <a id="gobottom" style="top: 0px; right: 0px;"></a>
-        <div id='footer'/>
     </body>
 </html>

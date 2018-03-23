@@ -15,7 +15,7 @@ class Admin_IndexController extends Core_Controller_Action
         if ($auth->hasIdentity()) {
             $identity = $auth->getIdentity();
             if (isset($identity['user']) && $identity['user'] == 'admin') {
-                $this->_helper->redirector('index', 'nganhnghe', 'admin');
+                $this->_helper->redirector('index', 'homecontent', 'admin');
             }
         }
 

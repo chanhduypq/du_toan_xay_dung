@@ -98,7 +98,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action {
     public function init() {
         parent::init();
         $this->setLayout();
-        $this->redirectIfNotLogin();
+//        $this->redirectIfNotLogin();
 
         set_time_limit(2000);
 
@@ -276,28 +276,28 @@ abstract class Core_Controller_Action extends Zend_Controller_Action {
     }
 
     private function redirectIfNotLogin() {
-        if ($this->_request->getModuleName() == 'admin') {
-            if ($this->_request->getControllerName() != 'index') {
-                $auth = Zend_Auth::getInstance();
-                if (!$auth->hasIdentity()) {
-                    $this->turnSessionPrevController();
-                    $this->_helper->redirector('index', 'index', 'admin');
-                } else {
-                    $identity = $auth->getIdentity();
-                    if (!isset($identity['user']) || $identity['user'] != 'admin') {
-                        $this->turnSessionPrevController();
-                        $this->_helper->redirector('index', 'index', 'admin');
-                    }
-                }
-            }
-        } else {
-            if ($this->_request->getControllerName() != 'index' && $this->_request->getControllerName() != 'question') {
-                $auth = Zend_Auth::getInstance();
-                if (!$auth->hasIdentity()) {
-                    $this->_helper->redirector('index', 'index', 'default');
-                }
-            }
-        }
+//        if ($this->_request->getModuleName() == 'admin') {
+//            if ($this->_request->getControllerName() != 'index') {
+//                $auth = Zend_Auth::getInstance();
+//                if (!$auth->hasIdentity()) {
+//                    $this->turnSessionPrevController();
+//                    $this->_helper->redirector('index', 'index', 'admin');
+//                } else {
+//                    $identity = $auth->getIdentity();
+//                    if (!isset($identity['user']) || $identity['user'] != 'admin') {
+//                        $this->turnSessionPrevController();
+//                        $this->_helper->redirector('index', 'index', 'admin');
+//                    }
+//                }
+//            }
+//        } else {
+//            if ($this->_request->getControllerName() != 'index' && $this->_request->getControllerName() != 'excel') {
+//                $auth = Zend_Auth::getInstance();
+//                if (!$auth->hasIdentity()) {
+//                    $this->_helper->redirector('index', 'index', 'default');
+//                }
+//            }
+//        }
     }
 
     /**

@@ -2,26 +2,10 @@
 <div class="span12">
     <ul id="topnav">
 
-        <li<?php if ($controller_name == 'nganhnghe') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/nganhnghe">Ngành nghề</a></li>
-        <li<?php if ($controller_name == 'question') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/question">Ngân hàng câu hỏi</a></li>
-        <li<?php if ($controller_name == 'user') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/user">User</a></li>
-        <li<?php if ($controller_name == 'exam') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/exam">Cài đặt việc thi cử</a></li>                            
-        <li<?php if (in_array($controller_name, array('homecontent', 'image', 'headerfooter', 'menu'))) echo ' class="active"'; ?>>
-            <a href="#">Cài đặt nội dung</a>
-            <ul>
-
-                <li><a href="<?php echo $this->baseUrl(); ?>/admin/homecontent">Nội dung trang chủ</a></li>                                
-                <li><a href="<?php echo $this->baseUrl(); ?>/admin/image">Logo và hình nền</a></li>
-                <li><a href="<?php echo $this->baseUrl(); ?>/admin/headerfooter">Phía trên và phía dưới</a></li>
-                <li><a href="<?php echo $this->baseUrl(); ?>/admin/menu">Menu</a></li>
-
-            </ul>
-
-        </li>
-        <li<?php if ($controller_name == 'guide') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/guide">Hướng dẫn sử dụng</a></li>
-        <li<?php if ($controller_name == 'headerpdf') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/headerpdf">Cài đặt nội dung file pdf</a></li>
-        <li<?php if ($controller_name == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/excel">excel</a></li>
-
+        <!--<li<?php if ($controller_name == 'user') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/user">User</a></li>-->
+        <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'homecontent') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/homecontent">Nội dung trang chủ</a></li>                                
+        <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'image') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/image">Logo và hình nền</a></li>
+        <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'headerfooter') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/headerfooter">Phía trên và phía dưới</a></li>
 
     </ul>
 </div>

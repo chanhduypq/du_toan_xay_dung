@@ -49,48 +49,6 @@ echo $this->doctype();
 
         <script type="text/javascript">
             /**
-             * index.phtml             
-             */
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 100) {
-                    $("#gotop").removeAttr("href");
-                    $("#gotop").stop().animate({
-                        bottom: "0",
-                        right: "0"
-                    }, {
-                        duration: 800,
-                        queue: false
-                    });
-                } else {
-                    $("#gotop").stop().animate({
-                        bottom: "-50",
-                        right: "-50"
-                    }, {
-                        duration: 1000,
-                        queue: false
-                    });
-                }
-                if ($(this).scrollTop() > 100) {
-                    $("#gobottom").removeAttr("href");
-                    $("#gobottom").stop().animate({
-                        top: "-50",
-                        right: "-50"
-                    }, {
-                        duration: 800,
-                        queue: false
-                    });
-                } else {
-                    $("#gobottom").stop().animate({
-                        top: "0",
-                        right: "0"
-                    }, {
-                        duration: 1000,
-                        queue: false
-                    });
-                }
-
-            });
-            /**
              * end index.phtml
              **/
             jQuery(function($) {
@@ -170,41 +128,7 @@ echo $this->doctype();
                 jQuery("a#changePassword").click(function() {
                     dialog.dialog( "open" );          	          	         		
                 });
-                /**
-                 * index.phtml
-                 **/
-                $("body").queryLoader2({
-                    barColor: "#6e6d73",
-                    backgroundColor: "#fff1b0",
-                    percentage: true,
-                    barHeight: 5,
-                    completeAnimation: "grow",
-                    minimumTime: 100
-                });
-                $("#gotop").click(function() {
-                    $("html, body").animate({
-                        scrollTop: 0
-                    }, "slow");
-                    return false;
-                });
-                $("#gobottom").click(function() {
-                    $("html, body").animate({
-                        scrollTop: $('#footer').offset().top
-                    }, 970);
-                    return false;
-                });
-                /**
-                 * end index.phtml
-                 **/            
-                
-                
-
             });
-            
-            
-        
-        
-        
 
         </script>
         <style>
@@ -377,7 +301,4 @@ Core_Common_Image::echoImage($this->baseUrl('/images/dien_luc.jpg'), 70, 70, 'he
             <!--end footer-->
 
         </div>
-        <a id="gotop" style="bottom: -50px; right: -50px;"></a>
-        <a id="gobottom" style="top: 0px; right: 0px;"></a>
-        <div id='footer'/>
     </body>
