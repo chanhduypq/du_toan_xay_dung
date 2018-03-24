@@ -18,15 +18,23 @@ class ExcelController extends Core_Controller_Action {
             if (isset($item) && $item != "") {
                 $extension = @explode(".", $item);
                 $extension = $extension[count($extension) - 1];
-                $item = 'data_'.$time.'.' . $extension;
+                
+                $item = $this->_getParam('type').'_'.$time.'.' . $extension;
                 $path = UPLOAD . "/public/upload_excel/" . $item;
                 move_uploaded_file($_FILES['excel']['tmp_name'], $path);
+                if ($this->_getParam('type') == 'dtxd') {
+                    $mapper = new Default_Model_Dutoan();
+                    $duToanId=$mapper->insert(array('file_name'=>$item));
+                    $this->importExcelForDtxd('upload_excel/' . $item,$duToanId);
+                } else {
+                    $mapper = new Default_Model_Thietbi();
+                    $thietBiId=$mapper->insert(array('file_name'=>$item));
+                    $this->importExcelForThietBi('upload_excel/' . $item,$thietBiId);
+                }
 
                 
-                $mapper=new Default_Model_Dutoan();
-                $duToanId=$mapper->insert(array('file_name'=>$item));
                 
-                $this->importExcel('upload_excel/' . $item,$duToanId);
+                
                 @unlink($path);
             }
             Core::message()->addSuccess('Lưu thành công');
@@ -35,13 +43,23 @@ class ExcelController extends Core_Controller_Action {
         $this->_helper->redirector('index', 'excel', 'default');
     }
 
-    private function importExcel($file_name,$duToanId) {
+    private function importExcelForDtxd($file_name,$duToanId) {
 
         $excel = new Zend_Excel();
         $excel->setOutputEncoding('UTF-8');
         $excel->read($file_name);
 
         $this->saveDuToanChiTiet($excel->sheets[0], $duToanId);
+
+    }
+    
+    private function importExcelForThietBi($file_name,$thietBiId) {
+
+        $excel = new Zend_Excel();
+        $excel->setOutputEncoding('UTF-8');
+        $excel->read($file_name);
+
+        $this->saveThietBiChiTiet($excel->sheets[0], $thietBiId);
 
     }
 
@@ -85,6 +103,61 @@ class ExcelController extends Core_Controller_Action {
                    
             $x ++;
         }
+    }
+    
+    private function saveThietBiChiTiet($sheet, $thietBiId) {
+        $mapper = new Default_Model_Thietbichitiet();
+        
+        $x = 6;
+        while ($x <= $sheet['numRows']) {
+
+            if(isset($sheet['cells'][$x][2])){
+                $ten_vttb=iconv(mb_detect_encoding($sheet['cells'][$x][2], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][2]);
+                $don_vi=iconv(mb_detect_encoding($sheet['cells'][$x][4], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][4]);
+                $don_gia=iconv(mb_detect_encoding($sheet['cells'][$x][5], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][5]);
+                $so_luong=iconv(mb_detect_encoding($sheet['cells'][$x][6], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][6]);
+                $thanh_tien=iconv(mb_detect_encoding($sheet['cells'][$x][7], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][7]);
+
+                $thanh_tien= str_replace(",", "", $thanh_tien);
+                $so_luong= str_replace(",", "", $so_luong);
+                $don_gia= str_replace(",", "", $don_gia);
+                if(!is_numeric($thanh_tien)){
+                    $thanh_tien=0;
+                }
+                if(!is_numeric($so_luong)){
+                    $so_luong=0;
+                }
+                if(!is_numeric($don_gia)){
+                    $don_gia=0;
+                }
+                
+                $dac_tinh_ky_thuat=iconv(mb_detect_encoding($sheet['cells'][$x][3], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][3]);
+                for($i=$x+1;$i<=$sheet['numRows'];$i++){
+                    if(!isset($sheet['cells'][$i][2])){
+                        $dac_tinh_ky_thuat.="\n".iconv(mb_detect_encoding($sheet['cells'][$i][3], mb_detect_order(), true), "UTF-8", $sheet['cells'][$i][3]);
+                    }
+                    else{
+                        break;
+                    }
+                }
+
+
+                if(trim($ten_vttb)!=""){
+                    $mapper->insert(array(
+                        'thiet_bi_id' => $thietBiId,
+                        'ten_vttb' => $ten_vttb,
+                        'dac_tinh_ky_thuat' => $dac_tinh_ky_thuat,
+                        'don_vi' => $don_vi,
+                        'don_gia' => $don_gia,
+                        'so_luong' => $so_luong,
+                        'thanh_tien' => $thanh_tien,
+                    ));
+                }
+            }
+            
+            $x ++;
+        }
+        
     }
 
 }

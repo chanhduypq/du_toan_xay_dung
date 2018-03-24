@@ -1,8 +1,19 @@
-<div class="span12" style="padding: 20px;">
+<!--<div class="span12" style="padding: 20px;">
     <ul id="topnav">
         <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'index') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/">Trang chủ</a></li>
         <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'dtxd') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/dtxd">Mẫu dự toán xây dựng</a></li>                        
         <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'tb') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/tb">Mẫu thiết bị</a></li>                        
         <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/excel">Nhập liệu thông số vào hệ thống</a></li>
     </ul>
-</div>
+</div>-->
+
+<nav class="navbar navbar-default" style="margin-bottom: 5px;">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav" id="topnav">
+            <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'index') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/">Trang chủ</a></li>
+            <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'dtxd') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/dtxd">Mẫu dự toán xây dựng</a></li>                        
+            <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'tb') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/tb">Mẫu thiết bị</a></li>                        
+            <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/excel">Nhập liệu thông số vào hệ thống</a></li>
+        </ul>
+    </div>
+</nav>

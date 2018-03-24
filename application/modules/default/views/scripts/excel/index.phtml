@@ -8,19 +8,53 @@ if (isset($this->message)&&trim($this->message)!='') {
     <?php
 }
 ?>
+<style>
+    form label:hover{
+        background-color: #cccccc;
+    }
+    form label{
+        cursor: pointer;
+    }
+</style>
 <div class="row-fluid" style="margin-top: 20px;margin-bottom: 20px;">
     <?php     
     $buttons[]=array('onclick'=>'document.form.submit();','label'=>'Lưu');
     echo $this->toolbar($buttons);
     ?>
 </div>
+<form name="form" enctype="multipart/form-data" id="form" action="<?php echo $this->baseUrl('/excel/save'); ?>" method="post">
 <div class="row-fluid">
-    <div class="span5"></div>
-    <div class="span7">
-        <form name="form" enctype="multipart/form-data" id="form" action="<?php echo $this->baseUrl('/excel/save'); ?>" method="post">
+    <div class="col-lg-4 col-md-4">&nbsp;</div>
+    <div class="col-lg-8 col-md-8">
+        
             
-            <div class="row-fluid">
-                <div class="span12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="col-lg-3 col-md-3">
+                        <label>
+                            
+                            <input type="radio" name="type" value="dtxd" checked="checked"/>
+                            Dự toán xây dựng
+                        </label>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <label>
+                            
+                            <input type="radio" name="type" value="tb"/>
+                            Thiết bị 
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+    
+    <div class="col-lg-5 col-md-5">&nbsp;</div>
+    <div class="col-lg-7 col-md-7">
+            
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
                     <p>                                            
                         <input type="file" name="excel"/>
                     </p>                
@@ -28,8 +62,9 @@ if (isset($this->message)&&trim($this->message)!='') {
             </div>
 
 
-        </form>
+        
     </div>
 
 </div>
+</form>
 
