@@ -48,6 +48,12 @@ class ExcelController extends Core_Controller_Action {
         $excel = new Zend_Excel();
         $excel->setOutputEncoding('UTF-8');
         $excel->read($file_name);
+        
+//        $cellValue = $excel->sheets[0]['cells'];//[7][7]->getCalculatedValue();
+//        echo '<pre>';
+//        var_dump($cellValue);
+//        echo '</pre>';
+//        exit;
 
         $this->saveDuToanChiTiet($excel->sheets[0], $duToanId);
 
@@ -68,13 +74,16 @@ class ExcelController extends Core_Controller_Action {
         
         $x = 7;
         while ($x <= $sheet['numRows']) {
-
+            if(!isset($sheet['cells'][$x])){
+                $x++;
+                continue;
+            }
             $ky_hieu=iconv(mb_detect_encoding($sheet['cells'][$x][2], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][2]);
             $doi_tuong=iconv(mb_detect_encoding($sheet['cells'][$x][3], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][3]);
             $don_vi=iconv(mb_detect_encoding($sheet['cells'][$x][4], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][4]);
-            $don_gia=iconv(mb_detect_encoding($sheet['cells'][$x][5], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][5]);
-            $khoi_luong=iconv(mb_detect_encoding($sheet['cells'][$x][6], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][6]);
-            $thanh_tien=iconv(mb_detect_encoding($sheet['cells'][$x][7], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][7]);
+            $don_gia=iconv(mb_detect_encoding($sheet['cells'][$x][10], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][10]);
+            $khoi_luong=iconv(mb_detect_encoding($sheet['cells'][$x][9], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][9]);
+            $thanh_tien=iconv(mb_detect_encoding($sheet['cells'][$x][11], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][11]);
             $thanh_tien= str_replace(",", "", $thanh_tien);
             $khoi_luong= str_replace(",", "", $khoi_luong);
             $don_gia= str_replace(",", "", $don_gia);

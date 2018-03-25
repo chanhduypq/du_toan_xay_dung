@@ -333,6 +333,13 @@ $items = $this->items;
         .dx-footer-rta-icon {
             height: 17px
         }
+        
+        form label:hover{
+            background-color: #cccccc;
+        }
+        form label{
+            cursor: pointer;
+        }
     </style>
     <form method="POST" action="<?php echo $this->baseUrl();?>/tb">
         <?php if($this->keyword!=''){?>
@@ -383,6 +390,12 @@ $items = $this->items;
                     <label>
                         <input type="radio" name="type" value="don_gia"<?php if($this->type=='don_gia') echo ' checked="checked"';?>/>
                         Đơn giá
+                    </label>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <label>
+                        <input type="radio" name="type" value="so_luong"<?php if($this->type=='so_luong') echo ' checked="checked"';?>/>
+                        Số lượng
                     </label>
                 </div>
             </div>
