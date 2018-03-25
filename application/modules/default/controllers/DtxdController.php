@@ -12,9 +12,22 @@ class DtxdController extends Core_Controller_Action {
             $file_name=$row['file_name'];
             $this->download("upload_excel",$file_name);
         }
+        
+        $keyword = $this->_getParam('keyword', '');
+        $keyword = trim($keyword);
+        $type = $this->_getParam('type', 'doi_tuong');
         $model = new Default_Model_Dutoanchitiet();
-        $rows = $model->fetchAll();
+        if ($keyword != '') {
+            $where = "$type like '%$keyword%'";
+            $rows = $model->fetchAll($where);
+        } else {
+            $where = '';
+            $rows = $model->fetchAll();
+        }
+        
         $this->view->items = $rows;
+        $this->view->keyword = $keyword;
+        $this->view->type = $type;
     }
 
 
