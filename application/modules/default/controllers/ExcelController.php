@@ -24,11 +24,11 @@ class ExcelController extends Core_Controller_Action {
                 move_uploaded_file($_FILES['excel']['tmp_name'], $path);
                 if ($this->_getParam('type') == 'dtxd') {
                     $mapper = new Default_Model_Dutoan();
-                    $duToanId=$mapper->insert(array('file_name'=>$item));
+                    $duToanId=$mapper->insert(array('file_name'=>$item,'quyet_dinh'=> $this->_getParam('quyet_dinh', '')));
                     $this->importExcelForDtxd('upload_excel/' . $item,$duToanId);
                 } else {
                     $mapper = new Default_Model_Thietbi();
-                    $thietBiId=$mapper->insert(array('file_name'=>$item));
+                    $thietBiId=$mapper->insert(array('file_name'=>$item,'quyet_dinh'=> $this->_getParam('quyet_dinh', '')));
                     $this->importExcelForThietBi('upload_excel/' . $item,$thietBiId);
                 }
 

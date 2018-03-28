@@ -7,7 +7,14 @@ class Admin_Model_LogoMapper
     {
         $data = array();
         $data['file_name'] = $item_image;
-        $data['dynamic'] = $dynamic;
+        if($dynamic!='-1'){
+            $data['dynamic'] = $dynamic;
+            $data['show'] = '1';
+        }
+        else{
+            $data['show'] = '0';
+        }
+        
 
         try {
             $ret = $this->getDB()->fetchRow("select file_name from logo");
@@ -24,6 +31,24 @@ class Admin_Model_LogoMapper
             return array('success' => false, 'file_name' => $file_name);
         }
         return array('success' => TRUE, 'file_name' => $file_name);
+    }
+    
+    public function save1($dynamic) 
+    {
+        $data = array();
+        if($dynamic!='-1'){
+            $data['dynamic'] = $dynamic;
+            $data['show'] = '1';
+        }
+        else{
+            $data['show'] = '0';
+        }
+        
+
+        try {
+            $this->getDB()->update('logo', $data);
+        } catch (Exception $e) {
+        }
     }
 
     public function getInfo() 

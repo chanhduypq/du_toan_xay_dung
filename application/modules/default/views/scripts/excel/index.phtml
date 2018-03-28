@@ -24,7 +24,9 @@ if (isset($this->message)&&trim($this->message)!='') {
 </div>
 <form name="form" enctype="multipart/form-data" id="form" action="<?php echo $this->baseUrl('/excel/save'); ?>" method="post">
 <div class="row-fluid">
-    <div class="col-lg-4 col-md-4">&nbsp;</div>
+    <div class="col-lg-4 col-md-4">
+        <input type="text" name="quyet_dinh" style="width: 300px" placeholder="Nhập thông tin quyết định vào đây nếu cần"/>
+    </div>
     <div class="col-lg-8 col-md-8">
         
             

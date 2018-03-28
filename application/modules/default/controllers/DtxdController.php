@@ -16,15 +16,14 @@ class DtxdController extends Core_Controller_Action {
         $keyword = $this->_getParam('keyword', '');
         $keyword = trim($keyword);
         $type = $this->_getParam('type', 'doi_tuong');
-        $model = new Default_Model_Dutoanchitiet();
         if ($keyword != '') {
-            $where = "$type like '%$keyword%'";
-            $rows = $model->fetchAll($where);
+            $where = "where $type like '%$keyword%'";
         } else {
             $where = '';
-            $rows = $model->fetchAll();
         }
-        
+        $sql = "select * from du_toan join du_toan_chi_tiet on du_toan_chi_tiet.du_toan_id=du_toan.id $where";
+        $rows = Core_Db_Table::getDefaultAdapter()->fetchAll($sql);
+
         $this->view->items = $rows;
         $this->view->keyword = $keyword;
         $this->view->type = $type;

@@ -15,14 +15,13 @@ class TbController extends Core_Controller_Action {
         $keyword = $this->_getParam('keyword', '');
         $keyword = trim($keyword);
         $type = $this->_getParam('type', 'dac_tinh_ky_thuat');
-        $model = new Default_Model_Thietbichitiet();
         if ($keyword != '') {
             $where = "$type like '%$keyword%'";
-            $rows = $model->fetchAll($where);
         } else {
             $where = '';
-            $rows = $model->fetchAll();
         }
+        $sql = "select * from thiet_bi join thiet_bi_chi_tiet on thiet_bi_chi_tiet.thiet_bi_id=thiet_bi.id $where";
+        $rows = Core_Db_Table::getDefaultAdapter()->fetchAll($sql);
         $this->view->items = $rows;
         $this->view->keyword = $keyword;
         $this->view->type = $type;

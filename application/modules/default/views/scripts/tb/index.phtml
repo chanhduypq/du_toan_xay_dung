@@ -380,41 +380,45 @@ $items = $this->items;
                         Đặc tính kỹ thuật
                     </label>
                 </div>
-                <div class="col-lg-2 col-md-2">
+<!--                <div class="col-lg-2 col-md-2">
                     <label>
                         <input type="radio" name="type" value="don_vi"<?php if($this->type=='don_vi') echo ' checked="checked"';?>/>
                         Đơn vị
                     </label>
-                </div>
+                </div>-->
                 <div class="col-lg-2 col-md-2">
                     <label>
                         <input type="radio" name="type" value="don_gia"<?php if($this->type=='don_gia') echo ' checked="checked"';?>/>
                         Đơn giá
                     </label>
                 </div>
-                <div class="col-lg-2 col-md-2">
+<!--                <div class="col-lg-2 col-md-2">
                     <label>
                         <input type="radio" name="type" value="so_luong"<?php if($this->type=='so_luong') echo ' checked="checked"';?>/>
                         Số lượng
                     </label>
-                </div>
+                </div>-->
             </div>
         </div>
     </form>
 <div class="row-fluid">
     <table class="table table-bordered" id="nanopool-table" style="display: none;">
             <thead>
-            <th>Tên VTTB</th>
-            <th>Đặc tính kỹ thuật</th>
-            <th>Đơn vị</th>
-            <th>Đơn giá</th>
-            <th>Số lượng</th>
-            <th>Thành tiền</th>
+                <th>Quyết định</th>
+                <th>Tên VTTB</th>
+                <th>Đặc tính kỹ thuật</th>
+                <th>Đơn vị</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
             </thead>
             <tbody>
                 <?php 
                     foreach ($items as $item){?>
                     <tr title="Nhấn vào đây để download file excel" id="thiet_bi_id_<?php echo $item['thiet_bi_id'];?>">
+                        <td>
+                            <?php echo $item['quyet_dinh'];?>
+                        </td>
                         <td>
                             <?php echo $item['ten_vttb'];?>
                         </td>

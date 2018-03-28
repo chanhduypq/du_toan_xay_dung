@@ -17,7 +17,7 @@ class Admin_ImageController extends Core_Controller_Action
         $this->view->hinhnen = $itemHinhnen->getInfo();
         
         $item=new Admin_Model_HinhnentrangchuMapper();
-        $this->view->bg = $item->getInfo();
+        $this->view->bg1 = $item->getInfo();
         
         
     }
@@ -43,6 +43,11 @@ class Admin_ImageController extends Core_Controller_Action
                 $path = UPLOAD . "/public" . $resultLogo['file_name'];
                 unlink($path);
             }
+        }
+        else{
+            $item = new Admin_Model_LogoMapper();
+            $item->save1($this->_getParam("dynamic"));
+            
         }
 
 
