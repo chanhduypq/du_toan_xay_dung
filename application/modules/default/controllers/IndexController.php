@@ -47,7 +47,7 @@ class IndexController extends Core_Controller_Action
     {
         $auth = Zend_Auth::getInstance();
         $auth->clearIdentity();
-        $this->_helper->redirector('index', 'index', 'admin');
+        $this->_helper->redirector('index', 'index', 'default');
     }
     
     public function logoutajaxAction() 

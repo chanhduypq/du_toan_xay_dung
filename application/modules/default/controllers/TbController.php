@@ -16,7 +16,14 @@ class TbController extends Core_Controller_Action {
         $keyword = trim($keyword);
         $type = $this->_getParam('type', 'dac_tinh_ky_thuat');
         if ($keyword != '') {
-            $where = "$type like '%$keyword%'";
+            $where = "where $type like '%$keyword%'";
+            if ($type == 'don_gia') {
+                if (is_numeric(str_replace(".", "", $keyword))) {
+                    $where = "where $type ='".str_replace(".", "", $keyword)."'";
+                } else {
+                    $where = 'where 1=0';
+                }
+            }
         } else {
             $where = '';
         }

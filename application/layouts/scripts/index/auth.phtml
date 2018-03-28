@@ -66,11 +66,14 @@ if ($auth->hasIdentity()) {
     <div id="admin-setting">
         <li class="a_li" style="cursor: auto;text-align: center;" id="danh_xung_full_name"><b><?php echo $identity['danh_xung'] . ' ' . $identity['full_name']; ?></b></li>
         <li class="a_li" id="changePassword"><p class="a_text">Đổi mật khẩu</p></li>
-        <li onclick="window.location = '<?php echo $this->baseUrl('/default/index/logout'); ?>';" class="a_li"><p class="a_text">Sign out</p></li>
+        <li onclick="window.location = '<?php echo $this->baseUrl('/'.Zend_Controller_Front::getInstance()->getRequest()->getModuleName().'/index/logout'); ?>';" class="a_li"><p class="a_text">Sign out</p></li>
     </div>
     <?php
 } else {
-    echo '<div style="float: right;margin-right: 10px;cursor: pointer;background-color: #006666;padding: 5px;border-radius: 5px;margin-bottom: 10px;color: white;" id="a_login">Sign in</div>';
+    if(Zend_Controller_Front::getInstance()->getRequest()->getModuleName()=='default'){
+        echo '<div style="float: right;margin-right: 10px;cursor: pointer;background-color: #006666;padding: 5px;border-radius: 5px;margin-bottom: 10px;color: white;" id="a_login">Sign in</div>';
+    }
+    
 }
 ?>
 <script type="text/javascript">

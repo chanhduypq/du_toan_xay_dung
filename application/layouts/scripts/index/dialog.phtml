@@ -195,14 +195,10 @@
         jQuery("#changePassword").click(function () {
             dialog.dialog("open");
         });
-        jQuery("#a_login,li#thi,li#review").click(function () {
+        jQuery("#a_login").click(function () {
             if ($(this).attr('id') == 'a_login') {
                 type = 0;
-            } else if ($(this).attr('id') == 'thi') {
-                type = 1;
-            } else if ($(this).attr('id') == 'review') {
-                type = 2;
-            }
+            } 
             dialogLogin.dialog("open");
         });
     });

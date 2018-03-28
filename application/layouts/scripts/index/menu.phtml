@@ -1,16 +1,25 @@
 <?php 
 $module=Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
+$auth = Zend_Auth::getInstance();
+if ($auth->hasIdentity()) {
+    $identity = $auth->getIdentity();
+}
+else{
+    $identity=NULL;
+}
 ?>
-<nav class="navbar navbar-default" style="margin-bottom: 5px;">
-    <div class="container-fluid">
+<nav class="navbar navbar-default" style="margin-bottom: 5px;background: none;width: auto;border: none;">
         <ul class="nav navbar-nav" id="topnav">
             <?php 
             if($module=='default'){?>
             <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'index') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/">Trang chủ</a></li>
             <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'dtxd') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/dtxd">Mẫu dự toán xây dựng</a></li>                        
             <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'tb') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/tb">Mẫu thiết bị</a></li>                        
-            <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/excel">Nhập liệu thông số vào hệ thống</a></li>
-            <?php
+                <?php 
+                if(is_array($identity)&&$identity['is_upload']=='1'){?>
+                <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/excel">Nhập liệu thông số vào hệ thống</a></li>
+                <?php
+                }
             }
             else { ?>
                 <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'user') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/user">User</a></li>
@@ -21,5 +30,4 @@ $module=Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
             }
             ?>
         </ul>
-    </div>
 </nav>

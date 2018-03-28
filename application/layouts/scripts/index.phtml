@@ -87,8 +87,9 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
     </head>
     <body style="background:#f0f0f0;">
 
+        <?php echo $this->render('index/dialog.phtml'); ?>
         <div class="container">
-            <div class="row" style="padding-top: 30px;height: 100px;background-image: url('<?php echo $this->baseUrl($hinh_nen); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
+            <div class="row" style="padding-top: 30px;height: 100px;background-image: url('<?php echo $this->baseUrl($hinh_nen); ?>');background-repeat: no-repeat;background-size: 100% 100%;margin-bottom: 20px;">
                 <div class="col-lg-3 col-md-3">
                     <?php 
                     if($logo['show']=='1'){
@@ -128,13 +129,11 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
                 </div>
                 <div class="col-lg-4 col-md-4">
                         <?php 
-                        if(Zend_Controller_Front::getInstance()->getRequest()->getModuleName()=='admin'){
                             echo $this->render('index/auth.phtml'); 
-                        }
                         ?>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-bottom: 20px;">
                 <?php echo $this->render('index/menu.phtml'); ?>
             </div>
 

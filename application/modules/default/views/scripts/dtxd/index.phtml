@@ -1,5 +1,17 @@
 <?php 
 $items = $this->items;
+$auth = Zend_Auth::getInstance();
+if ($auth->hasIdentity()) {
+    $identity = $auth->getIdentity();
+}
+else{
+    $identity=NULL;
+}
+if (is_array($identity) && $identity['is_download'] == '1') {
+    $title = 'Nhấn vào đây để download file excel';
+} else {
+    $title = '';
+}
 ?>
 
 
@@ -10,12 +22,17 @@ $items = $this->items;
     <script src="<?php echo $this->baseUrl(); ?>/js/jquery.dataTables.min.js?<?php echo substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);?>"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <style>
+        <?php 
+        if(is_array($identity)&&$identity['is_download']=='1'){?>
         #nanopool-table tbody tr{
             cursor: pointer;
         }
         #nanopool-table tbody tr:hover{
             background-color: #cccccc;
         }
+        <?php 
+        }
+        ?>
         .dx-body {
             background-color: #f1f1f1
         }
@@ -417,7 +434,7 @@ $items = $this->items;
             <tbody>
                 <?php 
                     foreach ($items as $item){?>
-                    <tr title="Nhấn vào đây để download file excel" id="du_toan_id_<?php echo $item['du_toan_id'];?>">
+                    <tr title="<?php echo $title;?>" id="du_toan_id_<?php echo $item['du_toan_id'];?>">
                         <td>
                             <?php echo $item['quyet_dinh'];?>
                         </td>
@@ -431,13 +448,31 @@ $items = $this->items;
                             <?php echo $item['don_vi'];?>
                         </td>
                         <td>
-                            <?php echo $item['don_gia'];?>
+                            <?php 
+                            if ($item['don_gia'] == 0) {
+                                echo 0;
+                            } else {
+                                echo number_format(floatval($item['don_gia']), 0, ",", ".") ;
+                            }
+                            ?>
                         </td>
                         <td>
-                            <?php echo $item['khoi_luong'];?>
+                            <?php 
+                            if ($item['khoi_luong'] == 0) {
+                                echo 0;
+                            } else {
+                                echo number_format(floatval($item['khoi_luong']), 0, ",", ".") ;
+                            }
+                            ?>
                         </td>
                         <td>
-                            <?php echo $item['thanh_tien'];?>
+                            <?php 
+                            if ($item['thanh_tien'] == 0) {
+                                echo 0;
+                            } else {
+                                echo number_format(floatval($item['thanh_tien']), 0, ",", ".") ;
+                            }
+                            ?>
                         </td>
                     </tr>
                     <?php 
@@ -458,6 +493,8 @@ $items = $this->items;
     });
     
     jQuery(function ($){
+        <?php 
+        if(is_array($identity)&&$identity['is_download']=='1'){?>
        $("#nanopool-table tbody tr").click(function (){
            id=$(this).attr('id');
            temp=id.split('_id_');//id sẽ là du_toan_id_xxx
@@ -465,5 +502,8 @@ $items = $this->items;
            $("#du_toan_id").val(id);
            $("form#download").submit();
        });
+       <?php 
+        }
+        ?>
     });
 </script>

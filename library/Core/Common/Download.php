@@ -23,19 +23,19 @@ class Core_Common_Download {
         }
 
         //download được file dung lượng lớn
-        self::downloadFile($path, $fileNameForDownload);
+//        self::downloadFile($path, $fileNameForDownload);
 
 
         //cách này không download được file dung lượng lớn
-//        header('Content-Description: File Transfer');
-//        header('Content-Type: application/octet-stream');
-//        header('Content-Disposition: attachment; filename="' . $fileNameForDownload . '"');
-//        header('Expires: 0');
-//        header('Cache-Control: must-revalidate');
-//        header('Pragma: public');
-//        header('Content-Length: ' . filesize(rtrim($path, '/') . '/' . $fileNameForDownload));
-//        readfile(rtrim($path, '/') . '/' . $fileNameForDownload);
-//        exit;
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . $fileNameForDownload . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize(rtrim($path, '/') . '/' . $fileNameForDownload));
+        readfile(rtrim($path, '/') . '/' . $fileNameForDownload);
+        exit;
     }
 
     public static function downloadFile($path, $fileName, $maxSpeed = 100, $doStream = false) {

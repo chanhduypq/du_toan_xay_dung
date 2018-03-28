@@ -31,11 +31,6 @@ class ExcelController extends Core_Controller_Action {
                     $thietBiId=$mapper->insert(array('file_name'=>$item,'quyet_dinh'=> $this->_getParam('quyet_dinh', '')));
                     $this->importExcelForThietBi('upload_excel/' . $item,$thietBiId);
                 }
-
-                
-                
-                
-                @unlink($path);
             }
             Core::message()->addSuccess('Lưu thành công');
         }
@@ -123,8 +118,8 @@ class ExcelController extends Core_Controller_Action {
             if(isset($sheet['cells'][$x][2])){
                 $ten_vttb=iconv(mb_detect_encoding($sheet['cells'][$x][2], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][2]);
                 $don_vi=iconv(mb_detect_encoding($sheet['cells'][$x][4], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][4]);
-                $don_gia=iconv(mb_detect_encoding($sheet['cells'][$x][5], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][5]);
-                $so_luong=iconv(mb_detect_encoding($sheet['cells'][$x][6], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][6]);
+                $don_gia=iconv(mb_detect_encoding($sheet['cells'][$x][6], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][6]);
+                $so_luong=iconv(mb_detect_encoding($sheet['cells'][$x][5], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][5]);
                 $thanh_tien=iconv(mb_detect_encoding($sheet['cells'][$x][7], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][7]);
 
                 $thanh_tien= str_replace(",", "", $thanh_tien);

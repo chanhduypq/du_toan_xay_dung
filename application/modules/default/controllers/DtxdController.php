@@ -18,6 +18,13 @@ class DtxdController extends Core_Controller_Action {
         $type = $this->_getParam('type', 'doi_tuong');
         if ($keyword != '') {
             $where = "where $type like '%$keyword%'";
+            if ($type == 'don_gia') {
+                if (is_numeric(str_replace(".", "", $keyword))) {
+                    $where = "where $type ='".str_replace(".", "", $keyword)."'";
+                } else {
+                    $where = '1=0';
+                }
+            }
         } else {
             $where = '';
         }
