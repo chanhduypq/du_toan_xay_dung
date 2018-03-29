@@ -8,9 +8,9 @@ class DtxdController extends Core_Controller_Action {
 
     public function indexAction() {
         if(is_numeric($this->_getParam('du_toan_id'))){
-            $row=Core_Db_Table::getDefaultAdapter()->fetchRow("select file_name from du_toan where id='".$this->_getParam('du_toan_id')."'");
-            $file_name=$row['file_name'];
-            $this->download("upload_excel",$file_name);
+            $row=Core_Db_Table::getDefaultAdapter()->fetchRow("select path from du_toan where id='".$this->_getParam('du_toan_id')."'");
+            $path = $row['path'];
+            $this->download("uploads/" . $path,$this->_getParam('file_name'));
         }
         
         $keyword = $this->_getParam('keyword', '');

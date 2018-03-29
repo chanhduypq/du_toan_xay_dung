@@ -25,7 +25,7 @@ class Admin_Form_User extends Core_Form
         $this->getElement('phone')->setLabel('Phone:');
         
         $is_upload=new Core_Form_Element_Checkbox('is_upload');
-        $is_upload->setValue('1')->setLabel('Cho phép nhập liệu hệ thống');
+        $is_upload->setValue('1')->setLabel('Cho phép nhập liệu');
         $this->addElement($is_upload);
         
         $is_download=new Core_Form_Element_Checkbox('is_download');

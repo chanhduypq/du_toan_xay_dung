@@ -17,7 +17,7 @@ else{
             <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'tb') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/tb">Mẫu thiết bị</a></li>                        
                 <?php 
                 if(is_array($identity)&&$identity['is_upload']=='1'){?>
-                <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/excel">Nhập liệu thông số vào hệ thống</a></li>
+                <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/excel">Nhập liệu</a></li>
                 <?php
                 }
             }

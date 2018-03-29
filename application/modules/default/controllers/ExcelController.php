@@ -12,28 +12,28 @@ class ExcelController extends Core_Controller_Action {
 
     public function saveAction() {
         $time= strtotime(date('Y-m-d H:i:s'));
+        $path=UPLOAD . "/public/uploads/".$this->_getParam('type')."_".$time;
+        mkdir($path);
         if (isset($_FILES['excel']) && isset($_FILES['excel']['name']) && $_FILES['excel']['name'] != '') {
 
             $item = $_FILES['excel']['name'];
             if (isset($item) && $item != "") {
                 $extension = @explode(".", $item);
                 $extension = $extension[count($extension) - 1];
-                
-                $item = $this->_getParam('type').'_'.$time.'.' . $extension;
-                $path = UPLOAD . "/public/upload_excel/" . $item;
-                move_uploaded_file($_FILES['excel']['tmp_name'], $path);
+                $item = 'excel.' . $extension;
+                move_uploaded_file($_FILES['excel']['tmp_name'], $path."/".$item);
                 if ($this->_getParam('type') == 'dtxd') {
                     $mapper = new Default_Model_Dutoan();
-                    $duToanId=$mapper->insert(array('file_name'=>$item,'quyet_dinh'=> $this->_getParam('quyet_dinh', '')));
-                    if($this->importExcelForDtxd('upload_excel/' . $item,$duToanId)==FALSE){
+                    $id=$mapper->insert(array('path'=>$this->_getParam('type')."_".$time,'quyet_dinh'=> $this->_getParam('quyet_dinh', ''),'has_pdf'=>0));
+                    if($this->importExcelForDtxd('uploads/' .$this->_getParam('type')."_".$time."/". $item,$id)==FALSE){
                         Core::message()->addSuccess('Vui lòng upload file excel theo định dạng 2003');
                         $this->_helper->redirector('index', 'excel', 'default');
                         exit;
                     }
                 } else {
                     $mapper = new Default_Model_Thietbi();
-                    $thietBiId=$mapper->insert(array('file_name'=>$item,'quyet_dinh'=> $this->_getParam('quyet_dinh', '')));
-                    if($this->importExcelForThietBi('upload_excel/' . $item,$thietBiId)==FALSE){
+                    $id=$mapper->insert(array('path'=>$this->_getParam('type')."_".$time,'quyet_dinh'=> $this->_getParam('quyet_dinh', ''),'has_pdf'=>0));
+                    if($this->importExcelForThietBi('uploads/' .$this->_getParam('type')."_".$time."/". $item,$id)==FALSE){
                         Core::message()->addSuccess('Vui lòng upload file excel theo định dạng 2003');
                         $this->_helper->redirector('index', 'excel', 'default');
                         exit;
@@ -41,6 +41,11 @@ class ExcelController extends Core_Controller_Action {
                 }
             }
             Core::message()->addSuccess('Lưu thành công');
+        }
+        
+        if (isset($_FILES['pdf']) && isset($_FILES['pdf']['name']) && $_FILES['pdf']['name'] != '') {
+            move_uploaded_file($_FILES['pdf']['tmp_name'], $path."/pdf.pdf");
+            $mapper->update(array('has_pdf'=>1), "id='$id'");
         }
 
         $this->_helper->redirector('index', 'excel', 'default');

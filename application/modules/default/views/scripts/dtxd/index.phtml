@@ -7,11 +7,7 @@ if ($auth->hasIdentity()) {
 else{
     $identity=NULL;
 }
-if (is_array($identity) && $identity['is_download'] == '1') {
-    $title = 'Nhấn vào đây để download file excel';
-} else {
-    $title = '';
-}
+
 ?>
 
 
@@ -22,17 +18,6 @@ if (is_array($identity) && $identity['is_download'] == '1') {
     <script src="<?php echo $this->baseUrl(); ?>/js/jquery.dataTables.min.js?<?php echo substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);?>"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <style>
-        <?php 
-        if(is_array($identity)&&$identity['is_download']=='1'){?>
-        #nanopool-table tbody tr{
-            cursor: pointer;
-        }
-        #nanopool-table tbody tr:hover{
-            background-color: #cccccc;
-        }
-        <?php 
-        }
-        ?>
         .dx-body {
             background-color: #f1f1f1
         }
@@ -430,11 +415,17 @@ if (is_array($identity) && $identity['is_download'] == '1') {
                 <th>Đơn giá</th>
                 <th>Khối lượng</th>
                 <th>Thành tiền</th>
+                <?php 
+                if(is_array($identity)&&$identity['is_download']=='1'){?>
+                    <th>Download</th>
+                <?php 
+                }
+                ?>
             </thead>
             <tbody>
                 <?php 
                     foreach ($items as $item){?>
-                    <tr title="<?php echo $title;?>" id="du_toan_id_<?php echo $item['du_toan_id'];?>">
+                    <tr id="du_toan_id_<?php echo $item['du_toan_id'];?>">
                         <td>
                             <?php echo $item['quyet_dinh'];?>
                         </td>
@@ -474,6 +465,24 @@ if (is_array($identity) && $identity['is_download'] == '1') {
                             }
                             ?>
                         </td>
+                        <?php 
+                        if(is_array($identity)&&$identity['is_download']=='1'){?>
+                            <td>
+                                <div style="padding: 5px;margin-bottom: 10px;" title="Nhấn vào đây để download file excel">
+                                    <button onclick="window.location='<?php echo $this->baseUrl();?>/dtxd/index/du_toan_id/<?php echo $item['du_toan_id'];?>/file_name/excel.xls';">Excel</button>
+                                </div>
+                                <?php 
+                                if($item['has_pdf']=='1'){?>
+                                <div style="padding: 5px;" title="Nhấn vào đây để download file pdf">
+                                    <button onclick="window.location='<?php echo $this->baseUrl();?>/dtxd/index/du_toan_id/<?php echo $item['du_toan_id'];?>/file_name/pdf.pdf';">Pdf</button>
+                                </div>
+                                <?php 
+                                }
+                                ?>
+                            </td>
+                        <?php 
+                        }
+                        ?>
                     </tr>
                     <?php 
                     }
@@ -482,10 +491,8 @@ if (is_array($identity) && $identity['is_download'] == '1') {
         </table>
 
 </div>
-    <form method="POST" id="download">
-        <input type="hidden" name="du_toan_id" id="du_toan_id"/>
-    </form>
 <script>
+        
     $(window).load(function() {
           $('#nanopool-table').show();
           $('#nanopool-table').DataTable();
@@ -493,17 +500,6 @@ if (is_array($identity) && $identity['is_download'] == '1') {
     });
     
     jQuery(function ($){
-        <?php 
-        if(is_array($identity)&&$identity['is_download']=='1'){?>
-       $("#nanopool-table tbody tr").click(function (){
-           id=$(this).attr('id');
-           temp=id.split('_id_');//id sẽ là du_toan_id_xxx
-           id=temp[1];
-           $("#du_toan_id").val(id);
-           $("form#download").submit();
-       });
-       <?php 
-        }
-        ?>
+        
     });
 </script>
