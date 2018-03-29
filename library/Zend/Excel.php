@@ -459,6 +459,7 @@ class Zend_Excel {
         if($res === false) {
             // check error code
             if($this->_ole->error == 1) {
+                return FALSE;
             // bad file
                 die('The filename ' . $sFileName . ' is not readable');
             }
@@ -468,6 +469,7 @@ class Zend_Excel {
         $this->data = $this->_ole->getWorkBook();
 
         $this->_parse();
+        return true;
     }
 
     /**

@@ -25,11 +25,19 @@ class ExcelController extends Core_Controller_Action {
                 if ($this->_getParam('type') == 'dtxd') {
                     $mapper = new Default_Model_Dutoan();
                     $duToanId=$mapper->insert(array('file_name'=>$item,'quyet_dinh'=> $this->_getParam('quyet_dinh', '')));
-                    $this->importExcelForDtxd('upload_excel/' . $item,$duToanId);
+                    if($this->importExcelForDtxd('upload_excel/' . $item,$duToanId)==FALSE){
+                        Core::message()->addSuccess('Vui lòng upload file excel theo định dạng 2003');
+                        $this->_helper->redirector('index', 'excel', 'default');
+                        exit;
+                    }
                 } else {
                     $mapper = new Default_Model_Thietbi();
                     $thietBiId=$mapper->insert(array('file_name'=>$item,'quyet_dinh'=> $this->_getParam('quyet_dinh', '')));
-                    $this->importExcelForThietBi('upload_excel/' . $item,$thietBiId);
+                    if($this->importExcelForThietBi('upload_excel/' . $item,$thietBiId)==FALSE){
+                        Core::message()->addSuccess('Vui lòng upload file excel theo định dạng 2003');
+                        $this->_helper->redirector('index', 'excel', 'default');
+                        exit;
+                    }
                 }
             }
             Core::message()->addSuccess('Lưu thành công');
@@ -42,8 +50,11 @@ class ExcelController extends Core_Controller_Action {
 
         $excel = new Zend_Excel();
         $excel->setOutputEncoding('UTF-8');
-        $excel->read($file_name);
-        
+        $bool = $excel->read($file_name);
+        if(!$bool){
+            return FALSE;
+        }
+
 //        $cellValue = $excel->sheets[0]['cells'];//[7][7]->getCalculatedValue();
 //        echo '<pre>';
 //        var_dump($cellValue);
@@ -51,6 +62,7 @@ class ExcelController extends Core_Controller_Action {
 //        exit;
 
         $this->saveDuToanChiTiet($excel->sheets[0], $duToanId);
+        return true;
 
     }
     
@@ -58,9 +70,13 @@ class ExcelController extends Core_Controller_Action {
 
         $excel = new Zend_Excel();
         $excel->setOutputEncoding('UTF-8');
-        $excel->read($file_name);
+        $bool = $excel->read($file_name);
+        if(!$bool){
+            return FALSE;
+        }
 
         $this->saveThietBiChiTiet($excel->sheets[0], $thietBiId);
+        return true;
 
     }
 
