@@ -384,24 +384,12 @@ else{
                         Đối tượng
                     </label>
                 </div>
-<!--                <div class="col-lg-2 col-md-2">
-                    <label>
-                        <input type="radio" name="type" value="don_vi"<?php if($this->type=='don_vi') echo ' checked="checked"';?>/>
-                        Đơn vị
-                    </label>
-                </div>-->
                 <div class="col-lg-2 col-md-2">
                     <label>
                         <input type="radio" name="type" value="don_gia"<?php if($this->type=='don_gia') echo ' checked="checked"';?>/>
                         Đơn giá
                     </label>
                 </div>
-<!--                <div class="col-lg-2 col-md-2">
-                    <label>
-                        <input type="radio" name="type" value="khoi_luong"<?php if($this->type=='khoi_luong') echo ' checked="checked"';?>/>
-                        Khối lượng
-                    </label>
-                </div>-->
             </div>
         </div>
     </form>
@@ -471,14 +459,11 @@ else{
                                 <div style="padding: 5px;margin-bottom: 10px;" title="Nhấn vào đây để download file excel">
                                     <button onclick="window.location='<?php echo $this->baseUrl();?>/dtxd/index/du_toan_id/<?php echo $item['du_toan_id'];?>/file_name/excel.xls';">Excel</button>
                                 </div>
-                                <?php 
-                                if($item['has_pdf']=='1'){?>
+                                
                                 <div style="padding: 5px;" title="Nhấn vào đây để download file pdf">
                                     <button onclick="window.location='<?php echo $this->baseUrl();?>/dtxd/index/du_toan_id/<?php echo $item['du_toan_id'];?>/file_name/pdf.pdf';">Pdf</button>
                                 </div>
-                                <?php 
-                                }
-                                ?>
+                                
                             </td>
                         <?php 
                         }

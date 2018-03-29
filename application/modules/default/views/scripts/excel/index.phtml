@@ -25,7 +25,9 @@ if (isset($this->message)&&trim($this->message)!='') {
 <form name="form" enctype="multipart/form-data" id="form" action="<?php echo $this->baseUrl('/excel/save'); ?>" method="post">
 <div class="row-fluid">
     <div class="col-lg-4 col-md-4">
-        <input type="text" name="quyet_dinh" style="width: 300px" placeholder="Nhập thông tin quyết định vào đây nếu cần"/>
+        <input type="text" name="so_quyet_dinh" style="width: 300px" placeholder="Nhập số quyết định vào đây"/><br><br>
+        <input type="text" id="ngay_quyet_dinh" name="ngay_quyet_dinh" style="width: 300px" placeholder="Nhập ngày quyết định"/><br><br>
+        <textarea placeholder="Nhập nội dung quyết định vào đây" name="noi_dung_quyet_dinh"></textarea>
     </div>
     <div class="col-lg-8 col-md-8">
         
