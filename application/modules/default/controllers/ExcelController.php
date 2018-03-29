@@ -4,6 +4,7 @@ class ExcelController extends Core_Controller_Action {
 
     public function init() {
         parent::init();
+        $this->view->headTitle('Nhập liệu', true);
     }
 
     public function indexAction() {
@@ -52,7 +53,7 @@ class ExcelController extends Core_Controller_Action {
         Core_Db_Table::getDefaultAdapter()->delete($table_name . "_chi_tiet", $table_name . "_id=$id");
         @unlink("uploads/" . $row['path']."/excel.xls");
         @unlink("uploads/" . $row['path']."/pdf.pdf");
-        rmdir("uploads/" . $row['path']);
+        @rmdir("uploads/" . $row['path']);
     }
 
     private function add() {
@@ -69,12 +70,15 @@ class ExcelController extends Core_Controller_Action {
         }
         $item = 'excel.' . $extension;
         move_uploaded_file($_FILES['excel']['tmp_name'], $path . "/" . $item);
+        $ngay_quyet_dinh=$this->_getParam('ngay_quyet_dinh', '');
+        list($d,$m,$y)= explode("/", $ngay_quyet_dinh);
+        $ngay_quyet_dinh="$y-$m-$d";
         if ($this->_getParam('type') == 'dtxd') {
             $mapper = new Default_Model_Dutoan();
             $id = $mapper->insert(array(
                                         'path' => $this->_getParam('type') . "_" . $time, 
                                         'so_quyet_dinh' => $this->_getParam('so_quyet_dinh', ''), 
-                                        'ngay_quyet_dinh' => $this->_getParam('ngay_quyet_dinh', ''), 
+                                        'ngay_quyet_dinh' => $ngay_quyet_dinh, 
                                         'noi_dung_quyet_dinh' => $this->_getParam('noi_dung_quyet_dinh', ''),
                                         'user_id'=> $this->getUserId(),
                                 ));
@@ -88,7 +92,7 @@ class ExcelController extends Core_Controller_Action {
             $id = $mapper->insert(array(
                                         'path' => $this->_getParam('type') . "_" . $time, 
                                         'so_quyet_dinh' => $this->_getParam('so_quyet_dinh', ''), 
-                                        'ngay_quyet_dinh' => $this->_getParam('ngay_quyet_dinh', ''), 
+                                        'ngay_quyet_dinh' => $ngay_quyet_dinh, 
                                         'noi_dung_quyet_dinh' => $this->_getParam('noi_dung_quyet_dinh', ''),
                                         'user_id'=> $this->getUserId(),
                                 ));
@@ -145,6 +149,7 @@ class ExcelController extends Core_Controller_Action {
     }
 
     private function saveDuToanChiTiet($sheet, $duToanId) {
+        $tong_tien=0;
         $mapper = new Default_Model_Dutoanchitiet();
 
         $x = 7;
@@ -171,6 +176,8 @@ class ExcelController extends Core_Controller_Action {
             if (!is_numeric($don_gia)) {
                 $don_gia = 0;
             }
+            
+            $tong_tien+=$thanh_tien;
 
 
             if (trim($ky_hieu) != "") {
@@ -187,9 +194,13 @@ class ExcelController extends Core_Controller_Action {
 
             $x ++;
         }
+        
+        $tong_tien=$tong_tien*1.1;
+        Core_Db_Table::getDefaultAdapter()->update("du_toan", array('tong_tien'=>$tong_tien),"id='$duToanId'");
     }
 
     private function saveThietBiChiTiet($sheet, $thietBiId) {
+        $tong_tien=0;
         $mapper = new Default_Model_Thietbichitiet();
 
         $x = 6;
@@ -214,6 +225,8 @@ class ExcelController extends Core_Controller_Action {
                 if (!is_numeric($don_gia)) {
                     $don_gia = 0;
                 }
+                
+                $tong_tien+=$thanh_tien;
 
                 $dac_tinh_ky_thuat = iconv(mb_detect_encoding($sheet['cells'][$x][3], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][3]);
                 for ($i = $x + 1; $i <= $sheet['numRows']; $i++) {
@@ -240,6 +253,9 @@ class ExcelController extends Core_Controller_Action {
 
             $x ++;
         }
+        
+        $tong_tien=$tong_tien*1.1;
+        Core_Db_Table::getDefaultAdapter()->update("thiet_bi", array('tong_tien'=>$tong_tien),"id='$thietBiId'");
     }
 
 }

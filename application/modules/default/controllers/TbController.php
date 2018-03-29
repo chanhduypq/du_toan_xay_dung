@@ -4,6 +4,7 @@ class TbController extends Core_Controller_Action {
 
     public function init() {
         parent::init();
+        $this->view->headTitle('Mẫu thiết bị', true);
     }
 
     public function indexAction() {

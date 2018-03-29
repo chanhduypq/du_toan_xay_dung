@@ -20,6 +20,10 @@ else{
                 <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'excel') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/excel">Nhập liệu</a></li>
                 <?php
                 }
+                if(is_array($identity)&&$identity['is_thongke']=='1'){?>
+                <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'thongke') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/thongke">Thống kê</a></li>
+                <?php
+                }
             }
             else { ?>
                 <li<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'user') echo ' class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/admin/user">User</a></li>

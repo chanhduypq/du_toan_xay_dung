@@ -414,8 +414,16 @@ else{
                 <?php 
                     foreach ($items as $item){?>
                     <tr id="du_toan_id_<?php echo $item['du_toan_id'];?>">
-                        <td>
-                            <?php echo $item['quyet_dinh'];?>
+                        <td style="width: 20%;text-align: center;" title="<?php echo $item['noi_dung_quyet_dinh'];?>">
+                            <?php 
+                            echo $item['so_quyet_dinh'];
+                            echo "<br>";
+                            list($date,$time)= explode(" ", $item['ngay_quyet_dinh']);
+                            list($y,$m,$d)= explode("-", $date);
+                            echo "$d/$m/$y";
+                            echo "<br>";
+                            echo Core_Common_String::crop($item['noi_dung_quyet_dinh'], 20);
+                            ?>
                         </td>
                         <td>
                             <?php echo $item['ky_hieu'];?>

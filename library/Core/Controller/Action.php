@@ -306,6 +306,18 @@ abstract class Core_Controller_Action extends Zend_Controller_Action {
                     }
                 }
             }
+            else if ($this->_request->getControllerName() == 'thongke') {
+                $auth = Zend_Auth::getInstance();
+                if (!$auth->hasIdentity()) {
+                    $this->_helper->redirector('index', 'index', 'default');
+                }
+                else{
+                    $identity = $auth->getIdentity();
+                    if($identity['is_thongke']!='1'){
+                        $this->_helper->redirector('index', 'index', 'default');
+                    }
+                }
+            }
         }
     }
 

@@ -4,6 +4,7 @@ class DtxdController extends Core_Controller_Action {
 
     public function init() {
         parent::init();
+        $this->view->headTitle('Mẫu dự toán xây dựng', true);
     }
 
     public function indexAction() {

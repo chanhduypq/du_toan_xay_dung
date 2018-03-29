@@ -15,6 +15,7 @@ class Admin_Form_User extends Core_Form
         $this->removeElement("danh_xung");
         $this->removeElement("is_download");
         $this->removeElement("is_upload");
+        $this->removeElement("is_thongke");
         $danh_xung=new Core_Form_Element_Select('danh_xung');
         $danh_xung->setValue('Anh');
         $danh_xung->addMultiOptions(array('Anh'=>'Anh','Chị'=>'Chị'))->setLabel('Danh xưng:')->setValue('Anh')->setSeparator('')->setRequired();
@@ -31,6 +32,10 @@ class Admin_Form_User extends Core_Form
         $is_download=new Core_Form_Element_Checkbox('is_download');
         $is_download->setValue('1')->setLabel('Cho phép download');
         $this->addElement($is_download);
+        
+        $is_thongke=new Core_Form_Element_Checkbox('is_thongke');
+        $is_thongke->setValue('1')->setLabel('Cho phép xem thống kê');
+        $this->addElement($is_thongke);
     }
     
 

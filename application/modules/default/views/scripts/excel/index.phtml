@@ -16,6 +16,8 @@ if (isset($this->message)&&trim($this->message)!='') {
         cursor: pointer;
     }
 </style>
+<script type="text/javascript" src="<?php echo $this->baseUrl('/js/jquery.number.js'); ?>"></script>
+<script src="<?php echo $this->baseUrl(); ?>/jquery-ui-1.10.3/ui/i18n/jquery.ui.datepicker-vi.js"></script>
 <div class="row-fluid" style="margin-top: 20px;margin-bottom: 20px;">
     <?php     
     $buttons[]=array('onclick'=>'document.form.submit();','label'=>'Lưu');
@@ -25,8 +27,8 @@ if (isset($this->message)&&trim($this->message)!='') {
 <form name="form" enctype="multipart/form-data" id="form" action="<?php echo $this->baseUrl('/excel/save'); ?>" method="post">
 <div class="row-fluid">
     <div class="col-lg-4 col-md-4">
-        <input type="text" name="so_quyet_dinh" style="width: 300px" placeholder="Nhập số quyết định vào đây"/><br><br>
-        <input type="text" id="ngay_quyet_dinh" name="ngay_quyet_dinh" style="width: 300px" placeholder="Nhập ngày quyết định"/><br><br>
+        <input type="text" id="so_quyet_dinh" name="so_quyet_dinh" style="width: 180px;" placeholder="Nhập số quyết định vào đây"/><br><br>
+        <input type="text" id="ngay_quyet_dinh" readonly="readonly" name="ngay_quyet_dinh" style="width: 290px;" placeholder="Nhấn vào biểu tượng bên phải để chọn ngày"/><br><br>
         <textarea placeholder="Nhập nội dung quyết định vào đây" name="noi_dung_quyet_dinh"></textarea>
     </div>
     <div class="col-lg-8 col-md-8">
@@ -80,4 +82,21 @@ if (isset($this->message)&&trim($this->message)!='') {
 
 </div>
 </form>
-
+<script type="text/javascript">
+    jQuery(function ($){
+       $('#so_quyet_dinh').number( true, 0,'','' );     
+       $( "#ngay_quyet_dinh" ).datepicker({
+          changeMonth: true,
+          changeYear: true,
+          dateFormat: "dd/mm/yy",
+          showWeek: true,
+            showOn: "button",
+            buttonImage: "<?php echo $this->baseUrl('/images/calendar/calendar.gif');?>",
+            buttonImageOnly: true,
+            buttonText: 'Click để chọn ngày',
+            option:$.datepicker.regional['vi']
+        });
+//        $( "#ngay_quyet_dinh" ).val('<?php echo date('d/m/Y');?>');
+       
+    });
+</script>
