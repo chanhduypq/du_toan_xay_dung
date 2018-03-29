@@ -20,6 +20,11 @@ class ExcelController extends Core_Controller_Action {
             if (isset($item) && $item != "") {
                 $extension = @explode(".", $item);
                 $extension = $extension[count($extension) - 1];
+                if(strtolower($extension)!='xls'){
+                    Core::message()->addSuccess('Vui lòng upload file excel theo định dạng 2003');
+                    $this->_helper->redirector('index', 'excel', 'default');
+                    exit;
+                }
                 $item = 'excel.' . $extension;
                 move_uploaded_file($_FILES['excel']['tmp_name'], $path."/".$item);
                 if ($this->_getParam('type') == 'dtxd') {
@@ -41,6 +46,11 @@ class ExcelController extends Core_Controller_Action {
                 }
             }
             Core::message()->addSuccess('Lưu thành công');
+        }
+        else{
+            Core::message()->addSuccess('Bạn đã quên chọn file excel để upload. Vui lòng chọn lại.');
+            $this->_helper->redirector('index', 'excel', 'default');
+            exit;
         }
         
         if (isset($_FILES['pdf']) && isset($_FILES['pdf']['name']) && $_FILES['pdf']['name'] != '') {
