@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-03-29 10:30:57
+Date: 2018-03-30 11:51:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,10 +20,13 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `du_toan`;
 CREATE TABLE `du_toan` (
-  `id` bigint(15) NOT NULL AUTO_INCREMENT,
+  `id` bigint(21) NOT NULL AUTO_INCREMENT,
   `path` varchar(255) NOT NULL,
-  `quyet_dinh` varchar(255) DEFAULT NULL,
-  `has_pdf` tinyint(1) DEFAULT NULL,
+  `so_quyet_dinh` bigint(21) DEFAULT NULL,
+  `ngay_quyet_dinh` timestamp NULL DEFAULT NULL,
+  `noi_dung_quyet_dinh` text,
+  `user_id` int(11) DEFAULT NULL,
+  `tong_tien` bigint(21) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -132,17 +135,20 @@ CREATE TABLE `logo` (
 -- ----------------------------
 -- Records of logo
 -- ----------------------------
-INSERT INTO `logo` VALUES ('/images/database/logo/_68f5db2e703a447eae20be9f0623b33a5ab53aa8c6a2d8.97271470.jpg', '0', '0');
+INSERT INTO `logo` VALUES ('/images/database/logo/_37215048fbcc4e18469cabca7545e3505abdba432f77b3.84487846.png', '0', '1');
 
 -- ----------------------------
 -- Table structure for thiet_bi
 -- ----------------------------
 DROP TABLE IF EXISTS `thiet_bi`;
 CREATE TABLE `thiet_bi` (
-  `id` bigint(15) NOT NULL AUTO_INCREMENT,
+  `id` bigint(21) NOT NULL AUTO_INCREMENT,
   `path` varchar(255) NOT NULL,
-  `quyet_dinh` varchar(255) DEFAULT NULL,
-  `has_pdf` tinyint(1) DEFAULT NULL,
+  `so_quyet_dinh` varchar(255) DEFAULT NULL,
+  `ngay_quyet_dinh` timestamp NULL DEFAULT NULL,
+  `noi_dung_quyet_dinh` text,
+  `user_id` int(11) DEFAULT NULL,
+  `tong_tien` bigint(21) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -184,13 +190,15 @@ CREATE TABLE `user` (
   `is_admin` tinyint(1) DEFAULT NULL,
   `is_download` tinyint(1) DEFAULT NULL,
   `is_upload` tinyint(1) DEFAULT NULL,
+  `is_thongke` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'Anh', 'Dương Viết Cương', 'cuongchp@gmail.com', '', '7c4a8d09ca3762af61e59520943dc26494f8941b', '1', '1', '1');
+INSERT INTO `user` VALUES ('1', 'Anh', 'Dương Viết Cương', 'cuongchp@gmail.com', '', '7c4a8d09ca3762af61e59520943dc26494f8941b', '1', '1', '1', '1');
+INSERT INTO `user` VALUES ('2', 'Anh', 'tuệ', 'chanhduypq@gmail.com', null, 'ca9bcd61ff000dcc95ff7f12c08eb39ddcaf41af', null, '1', '1', '1');
 
 -- ----------------------------
 -- View structure for layout_content
