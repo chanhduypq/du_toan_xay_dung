@@ -9,6 +9,8 @@ class ThongkeController extends Core_Controller_Action {
 
     public function indexAction() {
         
+        
+        
         $tu_ngay_quyet_dinh = $this->_getParam('tu_ngay_quyet_dinh', '');
         if ($tu_ngay_quyet_dinh != "") {
             list($d, $m, $y) = explode("/", $tu_ngay_quyet_dinh);
@@ -39,7 +41,7 @@ class ThongkeController extends Core_Controller_Action {
             $this->disableLayout();
             $this->disableRender();
 
-            require 'PHPExcel/Classes/PHPExcel.php';
+            require_once 'PHPExcel/Classes/PHPExcel.php';
             // Create new PHPExcel object
             $objPHPExcel = new PHPExcel();
 

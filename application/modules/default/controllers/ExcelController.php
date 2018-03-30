@@ -149,7 +149,7 @@ class ExcelController extends Core_Controller_Action {
     }
 
     private function saveDuToanChiTiet($sheet, $duToanId) {
-        $tong_tien=0;
+        $tong_tien = $tong_tien_cong_don = 0;
         $mapper = new Default_Model_Dutoanchitiet();
 
         $x = 7;
@@ -177,7 +177,10 @@ class ExcelController extends Core_Controller_Action {
                 $don_gia = 0;
             }
             
-            $tong_tien+=$thanh_tien;
+            if (trim($ky_hieu) != "") {
+                $tong_tien_cong_don+=$thanh_tien;
+            }
+            
 
 
             if (trim($ky_hieu) != "") {
@@ -193,9 +196,16 @@ class ExcelController extends Core_Controller_Action {
             }
 
             $x ++;
+            
+            if ($ky_hieu == '' && mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {
+                $tong_tien = $thanh_tien;
+            }
         }
         
-        $tong_tien=$tong_tien*1.1;
+        if ($tong_tien == 0) {
+            $tong_tien = $tong_tien_cong_don * 1.1;
+        }
+
         Core_Db_Table::getDefaultAdapter()->update("du_toan", array('tong_tien'=>$tong_tien),"id='$duToanId'");
     }
 
