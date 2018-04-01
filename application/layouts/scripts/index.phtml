@@ -83,6 +83,19 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
             });
             
         </script>
+        
+        <style>
+        
+        
+            form label:hover{
+                background-color: #cccccc;
+            }
+            form label{
+                cursor: pointer;
+            }
+
+
+        </style>
 
     </head>
     <body style="background:#f0f0f0;">
@@ -96,7 +109,7 @@ if ($header_text_dynamic == "1" && trim($header_text) != '') {
                             if ($logo['dynamic'] == "1") {
                                 ?>
 
-                                <div class="col-lg-12 col-md-12" id="logo_header">
+                    <div class="col-lg-12 col-md-12" id="logo_header">
                                     <?php
                                     Core_Common_Image::echoImage($this->baseUrl($logo['file_name']), 70, 70, 'height', array('id' => 'logo-img'));
                                     Core_Common_Image::echoImage($this->baseUrl($logo['file_name']), 70, 70, 'height', array('id' => 'logo-img1'));

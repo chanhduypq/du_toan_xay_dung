@@ -13,6 +13,8 @@ class ExcelController extends Core_Controller_Action {
     }
 
     public function saveAction() {
+//        var_dump($this->_getAllParams());
+//        exit;
         $error = '';
         if (trim($this->_getParam('so_quyet_dinh', '')) == '') {
             $error .= 'Vui lòng nhập số quyết định.<br>';
@@ -82,7 +84,7 @@ class ExcelController extends Core_Controller_Action {
             $mapper = new Default_Model_Dutoan();
             $id = $mapper->insert(array(
                                         'path' => $this->_getParam('type') . "_" . $time, 
-                                        'so_quyet_dinh' => ($this->_getParam('so_quyet_dinh_new', '') != ""&&$this->has_old) ? $this->_getParam('so_quyet_dinh_new', '') : $this->_getParam('so_quyet_dinh', ''),
+                                        'so_quyet_dinh' => ($this->_getParam('so_quyet_dinh_new', '') != ""&&$this->_getParam('change', '')&&$this->has_old) ? $this->_getParam('so_quyet_dinh_new', '') : $this->_getParam('so_quyet_dinh', ''),
                                         'ngay_quyet_dinh' => $ngay_quyet_dinh, 
                                         'noi_dung_quyet_dinh' => $this->_getParam('noi_dung_quyet_dinh', ''),
                                         'user_id'=> $this->getUserId(),
@@ -96,7 +98,7 @@ class ExcelController extends Core_Controller_Action {
             $mapper = new Default_Model_Thietbi();
             $id = $mapper->insert(array(
                                         'path' => $this->_getParam('type') . "_" . $time, 
-                                        'so_quyet_dinh' => ($this->_getParam('so_quyet_dinh_new', '') != ""&&$this->has_old) ? $this->_getParam('so_quyet_dinh_new', '') : $this->_getParam('so_quyet_dinh', ''),
+                                        'so_quyet_dinh' => ($this->_getParam('so_quyet_dinh_new', '') != ""&&$this->_getParam('change', '')&&$this->has_old) ? $this->_getParam('so_quyet_dinh_new', '') : $this->_getParam('so_quyet_dinh', ''),
                                         'ngay_quyet_dinh' => $ngay_quyet_dinh, 
                                         'noi_dung_quyet_dinh' => $this->_getParam('noi_dung_quyet_dinh', ''),
                                         'user_id'=> $this->getUserId(),
