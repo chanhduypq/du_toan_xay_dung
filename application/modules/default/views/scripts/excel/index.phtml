@@ -27,7 +27,10 @@ if (isset($this->message)&&trim($this->message)!='') {
 <form name="form" enctype="multipart/form-data" id="form" action="<?php echo $this->baseUrl('/excel/save'); ?>" method="post">
 <div class="row-fluid">
     <div class="col-lg-4 col-md-4">
-        <input type="text" id="so_quyet_dinh" name="so_quyet_dinh" style="width: 180px;" placeholder="Nhập số quyết định vào đây"/><br><br>
+        <input type="text" id="so_quyet_dinh" name="so_quyet_dinh" style="width: 180px;" placeholder="Nhập số quyết định vào đây"/>
+        <label><input type="checkbox" id="change"/>Thay số quyết định</label>
+        <input type="text" id="so_quyet_dinh_new" name="so_quyet_dinh_new" style="width: 230px;display: none;" placeholder="Nhập số quyết định mới vào đây"/>
+        <br><br>
         <input type="text" id="ngay_quyet_dinh" readonly="readonly" name="ngay_quyet_dinh" style="width: 290px;" placeholder="Nhấn vào biểu tượng bên phải để chọn ngày"/><br><br>
         <textarea placeholder="Nhập nội dung quyết định vào đây" name="noi_dung_quyet_dinh"></textarea>
     </div>
@@ -84,7 +87,16 @@ if (isset($this->message)&&trim($this->message)!='') {
 </form>
 <script type="text/javascript">
     jQuery(function ($){
-       $('#so_quyet_dinh').number( true, 0,'','' );     
+        $("#change").change(function (){
+           if($(this).is(':checked')){
+               $("#so_quyet_dinh_new").show();
+           } 
+           else{
+               $("#so_quyet_dinh_new").hide();
+           }
+        });
+       $('#so_quyet_dinh').number( true, 0,'','' );    
+       $('#so_quyet_dinh_new').number( true, 0,'','' );    
        $( "#ngay_quyet_dinh" ).datepicker({
           changeMonth: true,
           changeYear: true,

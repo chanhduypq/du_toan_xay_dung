@@ -1,6 +1,7 @@
 <?php
 
 class ExcelController extends Core_Controller_Action {
+    public $has_old = false;
 
     public function init() {
         parent::init();
@@ -32,6 +33,7 @@ class ExcelController extends Core_Controller_Action {
         }
 
         if ($this->exists()) {
+            $this->has_old=true;
             $this->delete();
         }
         
@@ -47,7 +49,10 @@ class ExcelController extends Core_Controller_Action {
         } else {
             $table_name = 'thiet_bi';
         }
-        $row = Core_Db_Table::getDefaultAdapter()->fetchRow("select * from $table_name where so_quyet_dinh='" . $this->_getParam('so_quyet_dinh') . "'");
+        $ngay_quyet_dinh=$this->_getParam('ngay_quyet_dinh', '');
+        list($d,$m,$y)= explode("/", $ngay_quyet_dinh);
+        $ngay_quyet_dinh="$y-$m-$d";
+        $row = Core_Db_Table::getDefaultAdapter()->fetchRow("select * from $table_name where so_quyet_dinh='" . $this->_getParam('so_quyet_dinh') . "' and ngay_quyet_dinh='$ngay_quyet_dinh'");
         $id = $row['id'];
         Core_Db_Table::getDefaultAdapter()->delete($table_name, "id=$id");
         Core_Db_Table::getDefaultAdapter()->delete($table_name . "_chi_tiet", $table_name . "_id=$id");
@@ -77,7 +82,7 @@ class ExcelController extends Core_Controller_Action {
             $mapper = new Default_Model_Dutoan();
             $id = $mapper->insert(array(
                                         'path' => $this->_getParam('type') . "_" . $time, 
-                                        'so_quyet_dinh' => $this->_getParam('so_quyet_dinh', ''), 
+                                        'so_quyet_dinh' => ($this->_getParam('so_quyet_dinh_new', '') != ""&&$this->has_old) ? $this->_getParam('so_quyet_dinh_new', '') : $this->_getParam('so_quyet_dinh', ''),
                                         'ngay_quyet_dinh' => $ngay_quyet_dinh, 
                                         'noi_dung_quyet_dinh' => $this->_getParam('noi_dung_quyet_dinh', ''),
                                         'user_id'=> $this->getUserId(),
@@ -91,7 +96,7 @@ class ExcelController extends Core_Controller_Action {
             $mapper = new Default_Model_Thietbi();
             $id = $mapper->insert(array(
                                         'path' => $this->_getParam('type') . "_" . $time, 
-                                        'so_quyet_dinh' => $this->_getParam('so_quyet_dinh', ''), 
+                                        'so_quyet_dinh' => ($this->_getParam('so_quyet_dinh_new', '') != ""&&$this->has_old) ? $this->_getParam('so_quyet_dinh_new', '') : $this->_getParam('so_quyet_dinh', ''),
                                         'ngay_quyet_dinh' => $ngay_quyet_dinh, 
                                         'noi_dung_quyet_dinh' => $this->_getParam('noi_dung_quyet_dinh', ''),
                                         'user_id'=> $this->getUserId(),
@@ -112,7 +117,10 @@ class ExcelController extends Core_Controller_Action {
         } else {
             $table_name = 'thiet_bi';
         }
-        $count = Core_Db_Table::getDefaultAdapter()->fetchOne("select count(*) as count from $table_name where so_quyet_dinh='".$this->_getParam('so_quyet_dinh')."'");
+        $ngay_quyet_dinh=$this->_getParam('ngay_quyet_dinh', '');
+        list($d,$m,$y)= explode("/", $ngay_quyet_dinh);
+        $ngay_quyet_dinh="$y-$m-$d";
+        $count = Core_Db_Table::getDefaultAdapter()->fetchOne("select count(*) as count from $table_name where so_quyet_dinh='".$this->_getParam('so_quyet_dinh')."' and ngay_quyet_dinh='$ngay_quyet_dinh'");
         return $count != 0;
     }
 

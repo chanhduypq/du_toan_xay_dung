@@ -420,6 +420,7 @@ $items = $this->items;
     jQuery(function ($){
        $( "#tu_ngay_quyet_dinh,#den_ngay_quyet_dinh" ).datepicker({
            onClose:function (){
+               $("#excel").val('0');
                $("#form").submit();
            },
           changeMonth: true,
