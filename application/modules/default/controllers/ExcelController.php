@@ -11,10 +11,16 @@ class ExcelController extends Core_Controller_Action {
     public function indexAction() {
         $this->view->message = $this->getMessage();        
     }
+    
+    public function deleteAction() {
+        if (trim($this->_getParam('so_quyet_dinh', '')) != ''&&trim($this->_getParam('ngay_quyet_dinh', '')) != '') {
+            $this->delete();
+            $this->_helper->redirector('index', 'thongke', 'default');
+        }
+        
+    }
 
     public function saveAction() {
-//        var_dump($this->_getAllParams());
-//        exit;
         $error = '';
         if (trim($this->_getParam('so_quyet_dinh', '')) == '') {
             $error .= 'Vui lòng nhập số quyết định.<br>';
@@ -140,6 +146,10 @@ class ExcelController extends Core_Controller_Action {
 //        var_dump($cellValue);
 //        echo '</pre>';
 //        exit;
+        
+//        $data = $excel->sheets[0];
+//        var_dump($data);
+//        exit;
 
         $this->saveDuToanChiTiet($excel->sheets[0], $duToanId);
         return true;
@@ -163,17 +173,50 @@ class ExcelController extends Core_Controller_Action {
         $mapper = new Default_Model_Dutoanchitiet();
 
         $x = 7;
+//        var_dump(isset($sheet['cells'][7][1]));
+//        exit;
         while ($x <= $sheet['numRows']) {
-            if (!isset($sheet['cells'][$x])) {
-                $x++;
-                continue;
+//            if (!isset($sheet['cells'][$x])) {
+//                $x++;
+//                continue;
+//            }
+            if(isset($sheet['cells'][$x][2])){
+                $ky_hieu = iconv(mb_detect_encoding($sheet['cells'][$x][2], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][2]);
             }
-            $ky_hieu = iconv(mb_detect_encoding($sheet['cells'][$x][2], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][2]);
-            $doi_tuong = iconv(mb_detect_encoding($sheet['cells'][$x][3], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][3]);
-            $don_vi = iconv(mb_detect_encoding($sheet['cells'][$x][4], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][4]);
-            $don_gia = iconv(mb_detect_encoding($sheet['cells'][$x][10], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][10]);
-            $khoi_luong = iconv(mb_detect_encoding($sheet['cells'][$x][9], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][9]);
-            $thanh_tien = iconv(mb_detect_encoding($sheet['cells'][$x][11], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][11]);
+            else{
+                $ky_hieu = '';
+            }
+            if(isset($sheet['cells'][$x][3])){
+                $doi_tuong = iconv(mb_detect_encoding($sheet['cells'][$x][3], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][3]);
+            }
+            else{
+                $doi_tuong = '';
+            }
+            if(isset($sheet['cells'][$x][4])){
+                $don_vi = iconv(mb_detect_encoding($sheet['cells'][$x][4], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][4]);
+            }
+            else{
+                $don_vi = '';
+            }
+            if(isset($sheet['cells'][$x][10])){
+                $don_gia = iconv(mb_detect_encoding($sheet['cells'][$x][10], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][10]);
+            }
+            else{
+                $don_gia = '';
+            }
+            if(isset($sheet['cells'][$x][9])){
+                $khoi_luong = iconv(mb_detect_encoding($sheet['cells'][$x][9], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][9]);
+            }
+            else{
+                $khoi_luong = '';
+            }
+            if(isset($sheet['cells'][$x][11])){
+                $thanh_tien = iconv(mb_detect_encoding($sheet['cells'][$x][11], mb_detect_order(), true), "UTF-8", $sheet['cells'][$x][11]);
+            }
+            else{
+                $thanh_tien = '';
+            }
+            
             $thanh_tien = str_replace(",", "", $thanh_tien);
             $khoi_luong = str_replace(",", "", $khoi_luong);
             $don_gia = str_replace(",", "", $don_gia);
@@ -187,13 +230,13 @@ class ExcelController extends Core_Controller_Action {
                 $don_gia = 0;
             }
             
-            if (trim($ky_hieu) != "") {
+            if (true){//trim($ky_hieu) != "") {
                 $tong_tien_cong_don+=$thanh_tien;
             }
             
 
 
-            if (trim($ky_hieu) != "") {
+            if (true){//trim($ky_hieu) != "") {
                 $mapper->insert(array(
                     'du_toan_id' => $duToanId,
                     'ky_hieu' => $ky_hieu,
@@ -204,10 +247,21 @@ class ExcelController extends Core_Controller_Action {
                     'thanh_tien' => $thanh_tien,
                 ));
             }
+            
+//            var_dump(array(
+//                    'du_toan_id' => $duToanId,
+//                    'ky_hieu' => $ky_hieu,
+//                    'doi_tuong' => $doi_tuong,
+//                    'don_vi' => $don_vi,
+//                    'don_gia' => $don_gia,
+//                    'khoi_luong' => $khoi_luong,
+//                    'thanh_tien' => $thanh_tien,
+//                ));
+//            exit;
 
             $x ++;
             
-            if ($ky_hieu == '' && mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {
+            if (mb_strtolower($doi_tuong) == 'thành tiền sau thuế'){//$ky_hieu == '' && mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {
                 $tong_tien = $thanh_tien;
             }
         }

@@ -1,5 +1,13 @@
 <?php 
 $items = $this->items;
+$allow_delete = FALSE;
+$auth = Zend_Auth::getInstance();
+if ($auth->hasIdentity()) {
+    $identity = $auth->getIdentity();
+    if (isset($identity['user']) && $identity['user'] == 'admin') {
+        $allow_delete = true;
+    }
+}
 ?>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
     
@@ -12,7 +20,10 @@ $items = $this->items;
 <div class="row-fluid" style="margin-top: 20px;margin-bottom: 20px;">
     <?php     
     $buttons[]=array('onclick'=>'$("#excel").val("1");$("#form").submit();','label'=>'Xuất file excel');
-    echo $this->toolbar($buttons);
+    if(is_array($items)&&count($items)>0){
+        echo $this->toolbar($buttons);
+    }
+    
     ?>
 </div>
 <form name="form" enctype="multipart/form-data" id="form" action="<?php echo $this->baseUrl('/thongke'); ?>" method="post">
@@ -68,6 +79,13 @@ $items = $this->items;
                         <td>
                             <?php 
                             echo $item['danh_xung'].' '.$item['full_name'];
+                            if($allow_delete){
+                            ?>
+                            <a class="remove" title="Click vào đây để xóa" href="<?php echo $this->baseUrl("/excel/delete?so_quyet_dinh=".$item['so_quyet_dinh']."&ngay_quyet_dinh=$d/$m/$y&type=dtxd"); ?>">
+                                <img class="delete question" src="<?php echo $this->baseUrl("/images/icon/delete-icon.png"); ?>"/>                                                   
+                            </a>
+                            <?php 
+                            }
                             ?>
                         </td>
                         
@@ -76,6 +94,8 @@ $items = $this->items;
                     }
                 ?>
             </tbody>
+            <?php 
+            if(is_array($items)&&count($items)>0){?>
             <tfoot>
                 <tr>
                     <td colspan="3">&nbsp;</td>
@@ -83,6 +103,9 @@ $items = $this->items;
                     <td>&nbsp;</td>
                 </tr>
             </tfoot>
+            <?php 
+            }
+            ?>
         </table>
 
 </div>
