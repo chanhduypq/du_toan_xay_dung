@@ -17,15 +17,9 @@ class Demo_SoapclientController extends Core_Controller_Action
         ));
         //        //một cách khác để gọi function
         //        var_dump($ws->getSoapClient()->__soapCall('noArgument', array()));
-        echo '<pre>';
         var_dump($ws->__call('noArgument', array()));
-        echo '</pre>';
-        echo '<pre>';
         var_dump($ws->__call('hasArgument', array(5, 10)));
-        echo '</pre>';
-        echo '<pre>';
         var_dump($ws->getFunctions());
-        echo '</pre>';
     }
 
 }
