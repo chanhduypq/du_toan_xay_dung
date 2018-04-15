@@ -134,24 +134,23 @@ class ExcelController extends Core_Controller_Action {
 
     private function importExcelForDtxd($file_name, $duToanId) {
 
-        $excel = new Zend_Excel();
-        $excel->setOutputEncoding('UTF-8');
-        $bool = $excel->read($file_name);
-        if (!$bool) {
-            return FALSE;
-        }
+//        $excel = new Zend_Excel();
+//        $excel->setOutputEncoding('UTF-8');
+//        $bool = $excel->read($file_name);
+//        if (!$bool) {
+//            return FALSE;
+//        }
+//
+//        $this->saveDuToanChiTiet_bk($excel->sheets[0], $duToanId);
+//        return true;
 
-//        $cellValue = $excel->sheets[0]['cells'];//[7][7]->getCalculatedValue();
-//        echo '<pre>';
-//        var_dump($cellValue);
-//        echo '</pre>';
-//        exit;
+        require_once 'PHPExcel/Documentation/Examples/Reader/reader.php';
+
+
+        $objPHPExcel = new reader();
+        $data = $objPHPExcel->read($file_name);
+        $this->saveDuToanChiTiet($data, $duToanId);
         
-//        $data = $excel->sheets[0];
-//        var_dump($data);
-//        exit;
-
-        $this->saveDuToanChiTiet($excel->sheets[0], $duToanId);
         return true;
     }
 
@@ -167,14 +166,73 @@ class ExcelController extends Core_Controller_Action {
         $this->saveThietBiChiTiet($excel->sheets[0], $thietBiId);
         return true;
     }
+    
+    private function saveDuToanChiTiet($data, $duToanId) {
 
-    private function saveDuToanChiTiet($sheet, $duToanId) {
+        $tong_tien = $tong_tien_cong_don = 0;
+        $mapper = new Default_Model_Dutoanchitiet();
+
+        foreach ($data as $key=>$value){
+            $ky_hieu = $value['B'];
+            if ($ky_hieu == '') {
+                $ky_hieu = ' ';
+            }
+            $doi_tuong=$value['C'];
+            $don_vi=$value['D'];
+            $don_gia=$value['F'];
+            $khoi_luong=$value['E'];
+            $thanh_tien=$value['G'];
+            
+            $thanh_tien = str_replace(",", "", $thanh_tien);
+            $khoi_luong = str_replace(",", "", $khoi_luong);
+            $don_gia = str_replace(",", "", $don_gia);
+            
+            
+//            if (!is_numeric($khoi_luong)) {
+//                $khoi_luong = 0;
+//            }
+//            if (!is_numeric($don_gia)) {
+//                $don_gia = 0;
+//            }
+//            if (!is_numeric($thanh_tien)) {
+//                $thanh_tien = $khoi_luong * $don_gia;
+//            }
+            
+            if (is_numeric($thanh_tien) && is_numeric($value['A'])) {
+                $tong_tien_cong_don += $thanh_tien;
+            }
+
+
+            if(is_numeric($value['A'])){
+                $mapper->insert(array(
+                    'du_toan_id' => $duToanId,
+                    'ky_hieu' => $ky_hieu,
+                    'doi_tuong' => $doi_tuong,
+                    'don_vi' => $don_vi,
+                    'don_gia' => $don_gia,
+                    'khoi_luong' => $khoi_luong,
+                    'thanh_tien' => $thanh_tien,
+                ));
+            }
+            
+            
+            if (trim($value['A']) == 'E' || strtolower(trim($value['A'])) == 'e' || $doi_tuong == 'Thành tiền sau thuế' || mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {//$ky_hieu == '' && mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {
+                $tong_tien = $thanh_tien;
+            }
+        }
+        
+        if ($tong_tien == 0) {
+            $tong_tien = $tong_tien_cong_don * 1.1;
+        }
+
+        Core_Db_Table::getDefaultAdapter()->update("du_toan", array('tong_tien'=>$tong_tien),"id='$duToanId'");
+    }
+
+    private function saveDuToanChiTiet_bk($sheet, $duToanId) {
         $tong_tien = $tong_tien_cong_don = 0;
         $mapper = new Default_Model_Dutoanchitiet();
 
         $x = 7;
-//        var_dump(isset($sheet['cells'][7][1]));
-//        exit;
         while ($x <= $sheet['numRows']) {
 //            if (!isset($sheet['cells'][$x])) {
 //                $x++;
@@ -220,14 +278,15 @@ class ExcelController extends Core_Controller_Action {
             $thanh_tien = str_replace(",", "", $thanh_tien);
             $khoi_luong = str_replace(",", "", $khoi_luong);
             $don_gia = str_replace(",", "", $don_gia);
-            if (!is_numeric($thanh_tien)) {
-                $thanh_tien = 0;
-            }
+            
             if (!is_numeric($khoi_luong)) {
                 $khoi_luong = 0;
             }
             if (!is_numeric($don_gia)) {
                 $don_gia = 0;
+            }
+            if (!is_numeric($thanh_tien)) {
+                $thanh_tien = $khoi_luong * $don_gia;
             }
             
             if (true){//trim($ky_hieu) != "") {
@@ -247,23 +306,13 @@ class ExcelController extends Core_Controller_Action {
                     'thanh_tien' => $thanh_tien,
                 ));
             }
-            
-//            var_dump(array(
-//                    'du_toan_id' => $duToanId,
-//                    'ky_hieu' => $ky_hieu,
-//                    'doi_tuong' => $doi_tuong,
-//                    'don_vi' => $don_vi,
-//                    'don_gia' => $don_gia,
-//                    'khoi_luong' => $khoi_luong,
-//                    'thanh_tien' => $thanh_tien,
-//                ));
-//            exit;
 
             $x ++;
             
             if (mb_strtolower($doi_tuong) == 'thành tiền sau thuế'){//$ky_hieu == '' && mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {
                 $tong_tien = $thanh_tien;
             }
+            
         }
         
         if ($tong_tien == 0) {
@@ -290,14 +339,16 @@ class ExcelController extends Core_Controller_Action {
                 $thanh_tien = str_replace(",", "", $thanh_tien);
                 $so_luong = str_replace(",", "", $so_luong);
                 $don_gia = str_replace(",", "", $don_gia);
-                if (!is_numeric($thanh_tien)) {
-                    $thanh_tien = 0;
-                }
+                
                 if (!is_numeric($so_luong)) {
                     $so_luong = 0;
                 }
                 if (!is_numeric($don_gia)) {
                     $don_gia = 0;
+                }
+                
+                if (!is_numeric($thanh_tien)) {
+                    $thanh_tien = $so_luong * $don_gia;
                 }
                 
                 $tong_tien+=$thanh_tien;
