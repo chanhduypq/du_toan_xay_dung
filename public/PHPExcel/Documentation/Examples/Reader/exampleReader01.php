@@ -26,7 +26,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . '../../../Classes/');
 include 'PHPExcel/IOFactory.php';
 
 
-$inputFileName = './sampleData/example1.xls';
+$inputFileName = './sampleData/MAU DU TOAN XAY DUNG.xlsx';
 echo 'Loading file ',pathinfo($inputFileName,PATHINFO_BASENAME),' using IOFactory to identify the format<br />';
 $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -34,7 +34,9 @@ $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 echo '<hr />';
 
 $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+echo '<pre>';
 var_dump($sheetData);
+echo '</pre>';
 
 
 ?>

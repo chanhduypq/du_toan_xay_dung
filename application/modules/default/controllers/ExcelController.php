@@ -216,12 +216,17 @@ class ExcelController extends Core_Controller_Action {
             }
             
             
-            if (trim($value['A']) == 'E' || strtolower(trim($value['A'])) == 'e' || $doi_tuong == 'Thành tiền sau thuế' || mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {//$ky_hieu == '' && mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {
+            if ($doi_tuong == 'Thành tiền sau thuế' || mb_strtolower($doi_tuong) == 'thành tiền sau thuế' || $doi_tuong=='THÀNH TIỀN SAU THUẾ') {//$ky_hieu == '' && mb_strtolower($doi_tuong) == 'thành tiền sau thuế') {
                 $tong_tien = $thanh_tien;
             }
         }
         
         if ($tong_tien == 0) {
+            Core_Db_Table::getDefaultAdapter()->delete("du_toan", "id='$duToanId'");
+            Core_Db_Table::getDefaultAdapter()->delete("du_toan_chi_tiet", "du_toan_id='$duToanId'");
+            Core::message()->addSuccess('Vui lòng điền thông tin:"Thành tiền sau thuế" của dự toán.');
+            $this->_helper->redirector('index', 'excel', 'default');
+            exit;
             $tong_tien = $tong_tien_cong_don * 1.1;
         }
 

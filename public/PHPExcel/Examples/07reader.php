@@ -37,14 +37,14 @@ date_default_timezone_set('Europe/London');
 require_once dirname(__FILE__) . '/../Classes/PHPExcel/IOFactory.php';
 
 
-if (!file_exists("05featuredemo.xlsx")) {
+if (!file_exists("DT XU LY HAM NGANG NHA MAY VA HP4 180409.xls")) {
 	exit("Please run 05featuredemo.php first." . EOL);
 }
 
 echo date('H:i:s') , " Load from Excel2007 file" , EOL;
 $callStartTime = microtime(true);
 
-$objPHPExcel = PHPExcel_IOFactory::load("05featuredemo.xlsx");
+$objPHPExcel = PHPExcel_IOFactory::load("DT XU LY HAM NGANG NHA MAY VA HP4 180409.xls");
 
 $callEndTime = microtime(true);
 $callTime = $callEndTime - $callStartTime;
