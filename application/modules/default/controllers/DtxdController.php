@@ -23,7 +23,7 @@ class DtxdController extends Core_Controller_Action {
                 if (is_numeric(str_replace(".", "", $keyword))) {
                     $where = "where $type ='".str_replace(".", "", $keyword)."'";
                 } else {
-                    $where = '1=0';
+                    $where = 'where 1=0';
                 }
             }
         } else {
